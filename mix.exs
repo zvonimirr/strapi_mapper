@@ -4,7 +4,7 @@ defmodule StrapiMapper.MixProject do
   def project do
     [
       app: :strapi_mapper,
-      version: "0.1.0",
+      version: "0.2.0",
       description:
         "StrapiMapper is a simple Elixir library used to map Strapi responses to Elixir maps.",
       elixir: "~> 1.16",

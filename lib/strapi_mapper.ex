@@ -18,25 +18,42 @@ defmodule StrapiMapper do
       iex> StrapiMapper.map_to_struct(%{"data" => %{"id" => 1, "attributes" => %{"name" => "John"}}})
       %{"id" => 1, "name" => "John"}
 
+      iex> StrapiMapper.map_to_struct(%{"data" => %{"id" => 1, "attributes" => %{"name" => "Jane"}}}, %StrapiMapper.Options{keys_returned_as: :atoms})
+      %{id: 1, name: "Jane"}
+
   """
-  @spec map_to_struct(data :: any()) :: map()
-  def map_to_struct(%{"data" => data = %{"attributes" => attributes}}) do
+  @spec map_to_struct(data :: any(), options :: StrapiMapper.Options.t()) :: map()
+  def map_to_struct(data, options \\ %StrapiMapper.Options{})
+
+  def map_to_struct(
+        %{"data" => data = %{"attributes" => attributes}},
+        options
+      ) do
+    should_keys_be_atoms? = options.keys_returned_as == :atoms
+    id_key = if should_keys_be_atoms?, do: :id, else: "id"
+
     Enum.reduce(attributes, %{}, fn {key, value}, acc ->
-      Map.put(acc, key, map_to_struct(value))
+      map_key = if should_keys_be_atoms?, do: String.to_atom(key), else: key
+      Map.put(acc, map_key, map_to_struct(value, options))
     end)
-    |> Map.put("id", data["id"])
+    |> Map.put(id_key, data["id"])
   end
 
-  def map_to_struct(%{"data" => data}) do
-    Enum.map(data, &map_to_struct/1)
+  def map_to_struct(%{"data" => data}, options) do
+    Enum.map(data, fn datum -> map_to_struct(datum, options) end)
   end
 
-  def map_to_struct(data = %{"attributes" => attributes}) do
+  def map_to_struct(data = %{"attributes" => attributes}, options) do
+    should_keys_be_atoms? = options.keys_returned_as == :atoms
+    id_key = if should_keys_be_atoms?, do: :id, else: "id"
+
     Enum.reduce(attributes, %{}, fn {key, value}, acc ->
-      Map.put(acc, key, map_to_struct(value))
+      map_key = if should_keys_be_atoms?, do: String.to_atom(key), else: key
+      Map.put(acc, map_key, map_to_struct(value, options))
     end)
-    |> Map.put("id", data["id"])
+    |> Map.put(id_key, data["id"])
   end
 
-  def map_to_struct(data), do: data
+  def map_to_struct(data, _options),
+    do: data
 end
