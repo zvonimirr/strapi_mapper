@@ -24,7 +24,10 @@ defmodule StrapiMapper.MixProject do
   defp package do
     [
       licenses: ["MIT"],
-      source_url: "https://github.com/zvonimirr/strapi_mapper"
+      source_url: "https://github.com/zvonimirr/strapi_mapper",
+      links: %{
+        "GitHub" => "https://github.com/zvonimirr/strapi_mapper"
+      }
     ]
   end
 
