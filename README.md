@@ -1,11 +1,15 @@
 # StrapiMapper
+StrapiMapper is a simple library that allows you to map Strapi responses to Elixir maps.
+It doesn't care which JSON library you use, as long as you provide it with a compatible map.
 
-**TODO: Add description**
+## Example
+```elixir
+iex> StrapiMapper.map_to_struct(%{"data" => %{"id" => 1, "attributes" => %{"name" => "John"}}})
+```
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `strapi_mapper` to your list of dependencies in `mix.exs`:
+Simply add `strapi_mapper` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +19,5 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/strapi_mapper>.
-
+## Documentation
+Documentation can be found at <https://hexdocs.pm/strapi_mapper>.
