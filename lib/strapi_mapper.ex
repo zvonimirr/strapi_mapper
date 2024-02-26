@@ -12,7 +12,14 @@ defmodule StrapiMapper do
   If the input data is a map, it will map each key-value pair of the map.
 
   Otherwise, it will return the input data.
+
+  ## Example
+    
+      iex> StrapiMapper.map_to_struct(%{"data" => %{"id" => 1, "attributes" => %{"name" => "John"}}})
+      %{"id" => 1, "name" => "John"}
+
   """
+  @spec map_to_struct(data :: any()) :: map()
   def map_to_struct(%{"data" => data = %{"attributes" => attributes}}) do
     Enum.reduce(attributes, %{}, fn {key, value}, acc ->
       Map.put(acc, key, map_to_struct(value))
