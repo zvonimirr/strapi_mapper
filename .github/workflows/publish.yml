@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Publish to Hex.pm
-      uses: erlangpack/github-action@v3
-      env:
-        HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+      - uses: actions/checkout@v2
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.16.1'
+          otp-version: '26.0'
+      - uses: cucumber/action-publish-hex@v1.0.0
+        with:
+          hex-api-token: ${{ secrets.HEX_API_TOKEN }}
