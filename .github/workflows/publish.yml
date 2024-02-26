@@ -1,0 +1,19 @@
+name: Publish to Hex 
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Publish to Hex
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Publish to Hex.pm
+      uses: erlangpack/github-action@v3
+      env:
+        HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
